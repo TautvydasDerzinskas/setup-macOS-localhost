@@ -1,0 +1,165 @@
+RCol='\x1B[0m'
+Bla='\x1B[0;30m';
+Cya='\x1B[0;36m';
+Blu='\x1B[0;34m';
+Whi='\x1B[0;37m';
+BRed='\x1B[1;31m';
+
+## Navigation
+alias ls="ls -GFT"
+alias ..='cd ..'
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
+alias .....='cd ../../../../'
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias cls='clear'
+alias md='mkdir'
+alias rd='rmdir'
+alias copy='cp -i'
+alias del='rm -i'
+
+## Docker
+declare -A dockerCommands
+declare -A dockerCommandsDescriptions
+
+alias docker-perform="docker-compose pull && docker-compose up -d"
+dockerCommands[0]="docker-perform"
+dockerCommandsDescriptions[0]="Pull & boot docker compose"
+alias docker-clear='docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q) && docker rmi $(docker images -q)'
+dockerCommands[1]="docker-clear"
+dockerCommandsDescriptions[1]="Stop all containers, remove all containers & images"
+
+## Open
+alias zshconf="code ~/.zshrc"
+alias ohmyzsh="code ~/.oh-my-zsh"
+alias git-repos="cd ${SETUP_HOME_GIT_ROOT_DIR}"
+alias oo="open ."
+alias firefox="open -a firefox"
+alias chrome="open -a \"google chrome"\"
+alias abl="chrome http://about:blank"
+alias vs="code"
+alias c="code ."
+alias vi="vim"
+
+## Git
+declare -A gitCommands
+declare -A gitCommandsDescriptions
+
+
+alias gfp="git fetch && git pull"
+alias add="git add ."
+alias gcm="git commit"
+alias gcmm="git commit -m "
+alias amend="git commit --amend" # amend previous commit message
+alias gits="git status"
+alias gitb="git branch"
+alias gitbr="gitb -a"                        # list remote branches
+alias gco="git checkout"
+alias gcob="git checkout -b"
+alias glast="git checkout -" # go to last branch you were on
+alias gco-last-branch="glast"
+alias last-branch="git checkout -"
+alias whichbranch="git branch --contains" # find branches a commit is on
+alias master="git checkout master"
+alias master-p="master && gfp"
+alias develop="git checkout develop"
+alias develop-p="develop && gfp"
+alias relb="git checkout release-branch"
+alias ghpush="ghpages && gpog"
+alias ghp="git checkout gh-pages"
+alias pullm="git pull origin master"
+alias pullg="git pull origin gh-pages"
+alias push="git push"
+alias push-with-tags="git push --follow-tags"
+alias pull="git pull"
+alias gp="git pull"
+alias gdel="git branch -D"
+alias delete_this_remote_branch="git push origin --delete"
+alias upm="master && gfp && glast"
+alias gres="git reset --hard"
+alias undo-last-commit="git reset HEAD~"
+alias gmm="gco master && gfp && glast && git merge master"
+alias gmd="gco develop && gfp && glast && git merge develop"
+alias did="git log --author=owino --no-merges"
+alias log="git log"
+alias glis="git show --pretty='' --name-only" #list files edited in commit given by hash
+alias changed-files="glis"
+alias gsl="git stash list"
+alias stash="git stash apply"
+alias pop="git stash pop"
+alias git-show-stash-at-id="show-stash-at-id"
+alias lg="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --branches"
+alias gbe="git browse"
+alias git-stash-clear-all="git stash clear"
+alias git-stash-delete-id="git stash drop" # git-stash-delete-id 1
+alias gz="git cz"
+
+## Node
+alias npmg="npm ls -g --depth 0" #List all npm modules installed globally
+alias npmgl="npmg"
+alias unpm="sudo npm i -g npm"
+alias nodebin="ls -la node_modules/.bin" #List local node executables
+alias ni="npm install"
+alias nit="npm init"
+alias nity="npm init -y"
+alias save="npm install --save"
+alias dev="npm install --save-dev"
+alias unsave="npm uninstall --save"
+alias undev="npm uninstall --save-dev"
+alias glo="npm install -g"
+alias unglo="npm uninstall -g"
+alias hs="chrome http://127.0.0.1:8080 && http-server"
+alias lpkg="less package.json"
+alias pkg="vs package.json"
+alias npm-update="npx npm-check -u"
+alias rmn="rm -rf node_modules"
+alias flush-npm="rm -rf node_modules && npm i && say NPM is done"
+alias link-start="npm link && npm start"
+alias npm-list-linked-projects="npm ls -g --depth=0 --link=true"
+alias serve="http-server -g -c-1"
+
+## NPM scripts
+declare -A npmCommands
+declare -A npmCommandsDescriptions
+
+npmCommands[0]="ns"
+npmCommandsDescriptions[0]="shortcut for npm start"
+alias ns="npm start"
+npmCommands[1]="nt"
+npmCommandsDescriptions[1]="shortcut for npm test"
+alias nt="npm test"
+npmCommands[2]="nw"
+npmCommandsDescriptions[2]="shortcut for npm run watch"
+alias nw="npm run watch"
+npmCommands[3]="nb"
+npmCommandsDescriptions[3]="shortcut for npm run build"
+alias nb="npm run build"
+
+## NVM
+alias nvmd="nvm use default"
+
+## Yarn
+alias ya="yarn add"
+alias yr="yarn remove"
+alias yi="yarn install"
+
+list-commands() {
+    # NPM commands
+    echo "${Cya}--------------- ${Red}NPM commands${Cya} ---------------${RCol}";
+    totalNPMCommands=${#npmCommands[*]}
+    for (( i=0; i<=$(( $totalNPMCommands -1 )); i++ ))
+    do
+        echo -n "${Cya}* ${Whi}${npmCommands[$i]}${RCol} - ${Yel}${npmCommandsDescriptions[$i]}${RCol}\n"
+    done
+
+    # Docker commands
+    echo "${Cya}--------------- ${Red}Docker commands${Cya} ---------------${RCol}";
+    totalDockerCommands=${#dockerCommands[*]}
+    for (( i=0; i<=$(( $totalDockerCommands -1 )); i++ ))
+    do
+        echo -n "${Cya}* ${Whi}${dockerCommands[$i]}${RCol} - ${Yel}${dockerCommandsDescriptions[$i]}${RCol}\n"
+    done
+}
+alias help-list=list-commands

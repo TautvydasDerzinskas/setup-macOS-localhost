@@ -1,0 +1,12 @@
+# Setup directory
+export SETUP_HOME_GIT_ROOT_DIR="${HOME}/Desktop/GitHub/"
+export SETUP_HOME_DIR="${SETUP_HOME_GIT_ROOT_DIR}setup-macOS-localhost/"
+
+# Loading configurations
+source "${SETUP_HOME_DIR}.env"
+source "${SETUP_HOME_DIR}.aliases"
+source "${SETUP_HOME_DIR}.functions"
+
+# Other
+cd "${SETUP_HOME_GIT_ROOT_DIR}"
+sh "${SETUP_HOME_DIR}.bootstrap.sh"
