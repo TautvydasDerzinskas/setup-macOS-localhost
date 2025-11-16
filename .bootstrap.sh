@@ -22,6 +22,8 @@ fi
 echo "$(($starts + 1))" > "$file"
 echo "$current_time" >> "$file"
 
+S_E_P_A_R_A_T_O_R="----------------------------------------------------"
+
 # Colors
 RCol='\x1B[0m'
 Bla='\x1B[0;30m';
@@ -32,15 +34,15 @@ Whi='\x1B[0;37m';
 BRed='\x1B[1;31m';
 
 # Main info
-version="3.0.1"
-title="*** Tautvydas Derzinskas .zshrc config $version"
+version="3.0.2"
 helpCommand="help-list"
 WEATHER_LOCATION="Zendek,Poland"
 WEATHER_LOCATION_2="Siauliai,Lithuania"
 
-echo "${Bla}--------------------------------------------${RCol}";
-echo "${Red}  $title  ${RCol}";
-echo "${Bla}--------------------------------------------${RCol}";
+echo "${Bla}$S_E_P_A_R_A_T_O_R${RCol}";
+echo "${Cya}~|~ _    _|_  |_| _| _  _";
+echo "${Cya} | (_||_| | \/ _|(_|(_|_\\  ${Red}.zshrc config ${Whi}$version${RCol}";
+echo "${Bla}$S_E_P_A_R_A_T_O_R${RCol}";
 echo "${Cya}* ${Whi}Current date${RCol} - ${BRed}$currentDate${RCol}"
 if [ "$last_time" -gt 0 ]; then
   diff=$((current_time - last_time))
@@ -67,4 +69,4 @@ if [ -x "$(command -v curl)" ]; then
 fi
 
 echo "${Blu}* ${Whi}Find out available commands by typing${RCol} - ${BRed}$helpCommand${RCol}"
-echo "${Bla}--------------------------------------------${RCol}";
+echo "${Bla}$S_E_P_A_R_A_T_O_R${RCol}";
