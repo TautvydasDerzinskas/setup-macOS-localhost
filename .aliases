@@ -95,6 +95,7 @@ alias gbe="git browse"
 alias git-stash-clear-all="git stash clear"
 alias git-stash-delete-id="git stash drop" # git-stash-delete-id 1
 alias gz="git cz"
+alias wb="git checkout $WIP_GIT_BRANCH"
 
 ## Node
 alias npmg="npm ls -g --depth 0" #List all npm modules installed globally
