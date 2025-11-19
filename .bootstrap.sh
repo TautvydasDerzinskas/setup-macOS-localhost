@@ -18,8 +18,7 @@ main() {
   print_separator
   print_stats
   fetch_weather
-  print_line "${Blu}" "* ${Whi}Weather${RCol} - ${BRed}$weather${RCol}"
-  print_line "${Cya}" "* ${Whi}Weather${RCol} - ${BRed}$weather2${RCol}"
+  print_weather
   print_line "${Blu}" "* ${Whi}Find out available commands by typing${RCol} - ${BRed}$helpCommand${RCol}"
   print_separator
 }
