@@ -16,3 +16,5 @@ fi
 * `sudo ~/Desktop/GitHub/setup-macOS-localhost/.install.sh`
 
 **(modify the paths above if accordingly to your setup)**
+
+4. To make github prs module work you need to install github cli (gh) `brew install gh`

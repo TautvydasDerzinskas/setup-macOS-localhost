@@ -1,5 +1,9 @@
 extract_temp() {
-  echo "$1" | sed 's/.*: \([+-][0-9]*\)°C.*/\1/'
+  local t
+  t=$(echo "$1" | sed -E 's/.* ([+-]?[0-9]+)°C.*/\1/')
+  if [[ "$t" =~ ^-?[0-9]+$ ]]; then
+    echo "$t"
+  fi
 }
 
 fetch_weather() {
@@ -30,12 +34,13 @@ fetch_weather() {
             fetched=true
             temp_current=$(extract_temp "$weather")
             temp2_current=$(extract_temp "$weather2")
-            if [ -n "$temp_saved" ]; then
+            if [[ "$temp_current" =~ ^-?[0-9]+$ && "$temp_saved" =~ ^-?[0-9]+$ ]]; then
               temp_change=$((temp_current - temp_saved))
             else
               temp_change="N/A"
             fi
-            if [ -n "$temp2_saved" ]; then
+
+            if [[ "$temp2_current" =~ ^-?[0-9]+$ && "$temp2_saved" =~ ^-?[0-9]+$ ]]; then
               temp_change2=$((temp2_current - temp2_saved))
             else
               temp_change2="N/A"
