@@ -11,7 +11,7 @@ BRed='\x1B[1;31m';
 S_E_P_A_R_A_T_O_R="----------------------------------------------------"
 
 # Main info
-version="3.0.2"
+version="3.1.0"
 helpCommand="help-list"
 WEATHER_LOCATION="Zendek,Poland"
 WEATHER_LOCATION_2="Siauliai,Lithuania"

@@ -13,8 +13,11 @@ fetch_prs() {
           | jq -r --arg user "$user" '.[]
             | select(
                 (any(.reviewRequests[]?; .__typename=="User" and .login==$user))
-                and
-                (all(.reviews[]?; .author.login!=$user))
+                or
+                (
+                  any(.reviews[]?; .author.login==$user)
+                  and ([.reviews[]? | select(.author.login==$user) | .state] | last != "APPROVED")
+                )
               )
             | "https://github.com/openx/ui-unity/pull/\(.number)\n\(.title)"' 2>/dev/null)
 

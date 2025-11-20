@@ -9,6 +9,7 @@ source "${SETUP_HOME_DIR}utils/print_utils.sh"
 source "${SETUP_HOME_DIR}utils/ascii_utils.sh"
 source "${SETUP_HOME_DIR}utils/weather_utils.sh"
 source "${SETUP_HOME_DIR}utils/github_utils.sh"
+source "${SETUP_HOME_DIR}utils/calendar_utils.sh"
 
 # Initialize bootstrap
 init_bootstrap
@@ -23,6 +24,7 @@ main() {
   print_line "${Blu}" "* ${Whi}Find out available commands by typing${RCol} - ${BRed}$helpCommand${RCol}"
   print_separator
   fetch_prs
+  fetch_calendar_events
 }
 
 main
