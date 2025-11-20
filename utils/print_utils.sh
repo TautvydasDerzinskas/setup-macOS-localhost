@@ -1,14 +1,32 @@
 TOGGLE_FILE="${SETUP_HOME_DIR}/.asterisk_toggle.txt"
 
+# Super overengineered way of returning asterisk in alternating colors
 generate_asterisk() {
     if [ ! -f "$TOGGLE_FILE" ]; then
         echo 0 > "$TOGGLE_FILE"
     fi
+
+    # Use a lock file to prevent race conditions
+    local lock_file="${TOGGLE_FILE}.lock"
+    local lock_fd=200
+
+    # Acquire lock (create lock file exclusively)
+    while ! mkdir "$lock_file" 2>/dev/null; do
+        sleep 0.01
+    done
+
+    # Read current toggle state
     local toggle=$(cat "$TOGGLE_FILE")
     local colors=("${Blu}" "${Cya}")
     local result="${colors[$toggle]}*${RCol}"
+
+    # Update toggle state
     local new_toggle=$((1 - toggle))
     echo "$new_toggle" > "$TOGGLE_FILE"
+
+    # Release lock
+    rmdir "$lock_file"
+
     echo "$result"
 }
 
