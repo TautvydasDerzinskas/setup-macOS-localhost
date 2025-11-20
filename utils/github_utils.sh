@@ -26,7 +26,7 @@ fetch_prs() {
           --template '{{range .}}{{.url}}{{"\n"}}{{.title}}{{"\n"}}{{end}}' 2>/dev/null)
 
         if [ -n "$reviewer_prs" ]; then
-          print_line "${Cya}" "* ${Whi}PRs to review:${RCol}"
+          print_line "$(generate_asterisk) ${Whi}PRs to review:${RCol}"
           echo "$reviewer_prs" | while IFS= read -r url && IFS= read -r title; do
             [ -n "$url" ] && [ -n "$title" ] && {
               print_line "${Yel}" "  - ${Blu}$url${RCol}"
@@ -37,7 +37,7 @@ fetch_prs() {
         fi
 
         if [ -n "$own_prs" ]; then
-          print_line "${Blu}" "* ${Whi}My PRs:${RCol}"
+          print_line "$(generate_asterisk) ${Whi}My PRs:${RCol}"
           echo "$own_prs" | while IFS= read -r url && IFS= read -r title; do
             [ -n "$url" ] && [ -n "$title" ] && {
               print_line "${Yel}" "  - ${Blu}$url${RCol}"
@@ -48,7 +48,7 @@ fetch_prs() {
         fi
       } > "$cache_file"
     else
-      print_line "${Yel}" "* ${Whi}GitHub CLI not available${RCol}"
+      print_line "$(generate_asterisk) ${Whi}GitHub CLI not available${RCol}"
     fi
   }
 

@@ -90,13 +90,13 @@ fetch_weather() {
 
 print_weather() {
   if [ "$temp_change" != "0" ] && [ "$temp_change" != "N/A" ]; then
-    print_line "${Blu}" "* ${Whi}Weather${RCol} - ${BRed}$weather${Whi} ($temp_change°C)${RCol}"
+    print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather${Whi} ($temp_change°C)${RCol}"
   else
-    print_line "${Blu}" "* ${Whi}Weather${RCol} - ${BRed}$weather${RCol}"
+    print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather${RCol}"
   fi
   if [ "$temp_change2" != "0" ] && [ "$temp_change2" != "N/A" ]; then
-    print_line "${Cya}" "* ${Whi}Weather${RCol} - ${BRed}$weather2${Whi} ($temp_change2°C)${RCol}"
+    print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather2${Whi} ($temp_change2°C)${RCol}"
   else
-    print_line "${Cya}" "* ${Whi}Weather${RCol} - ${BRed}$weather2${RCol}"
+    print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather2${RCol}"
   fi
 }

@@ -21,7 +21,7 @@ main() {
   print_stats
   fetch_weather
   print_weather
-  print_line "${Blu}" "* ${Whi}Find out available commands by typing${RCol} - ${BRed}$helpCommand${RCol}"
+  print_line "$(generate_asterisk) ${Whi}Find out available commands by typing${RCol} - ${BRed}$helpCommand${RCol}"
   print_separator
   fetch_prs
   fetch_calendar_events

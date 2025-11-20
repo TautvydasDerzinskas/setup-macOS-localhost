@@ -1,7 +1,7 @@
 init_bootstrap() {
   file="${SETUP_HOME_DIR}.bootstrap.txt"
   if ! test -f "$file"; then
-    echo "*** Creating bootstrap counter DB file"
+    echo "$(generate_asterisk) Creating bootstrap counter DB file"
     touch "$file"
     echo "0" > "$file"
     echo "0" >> "$file"

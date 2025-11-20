@@ -18,3 +18,5 @@ fi
 **(modify the paths above if accordingly to your setup)**
 
 4. To make github prs module work you need to install github cli (gh) `brew install gh`
+
+5. To make google calendar sync work you need to isntall `brew install gcalcli`
