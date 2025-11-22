@@ -10,9 +10,9 @@ fetch_calendar_events() {
 
     # Check if it's past 5 PM (17:00)
     if (( current_hour >= 17 )); then
-        # After 5 PM, show tomorrow's events
+        # After 5 PM, show tomorrow's events only
         start_day="tomorrow"
-        end_day="2 days"
+        end_day="tomorrow 23:59"
         time_marker="evening"
     else
         # Before 5 PM, show today's events
