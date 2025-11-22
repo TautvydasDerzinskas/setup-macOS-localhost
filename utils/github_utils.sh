@@ -1,8 +1,14 @@
 fetch_prs() {
   cache_file="${SETUP_HOME_DIR}/.prs.txt"
-  max_age=$((60 * 60))
+  max_age=$((60 * 60))  # 1 hour normally
 
   get_mtime() { stat -f %m "$1"; }
+
+  # Get day of week (1=Monday, 7=Sunday)
+  get_day_of_week() {
+    local timestamp=$1
+    date -r "$timestamp" +%u
+  }
 
   generate_prs() {
     if [ -x "$(command -v gh)" ]; then
@@ -56,9 +62,25 @@ fetch_prs() {
   }
 
   # Check cache freshness
+  now=$(date +%s)
+  current_day=$(get_day_of_week "$now")
+
   if [ -f "$cache_file" ]; then
     last_modified=$(get_mtime "$cache_file")
-    age=$(( $(date +%s) - last_modified ))
+    cache_day=$(get_day_of_week "$last_modified")
+    age=$(( now - last_modified ))
+
+    # Weekend logic (Saturday=6, Sunday=7)
+    if [ "$current_day" -eq 6 ] || [ "$current_day" -eq 7 ]; then
+      # Currently weekend
+      if [ "$cache_day" -eq 5 ]; then
+        # Cache from Friday - keep it fresh all weekend
+        age=0
+      elif [ "$cache_day" -eq 6 ] || [ "$cache_day" -eq 7 ]; then
+        # Cache from weekend - keep it until Monday
+        age=0
+      fi
+    fi
   else
     age=$max_age
   fi
