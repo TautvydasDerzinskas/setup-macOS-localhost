@@ -22,8 +22,8 @@ fetch_weather() {
     if [ $((current_time - last_fetch)) -le 1800 ]; then
       weather="$weather_saved"
       weather2="$weather2_saved"
-      temp_change=0
-      temp_change2=0
+      temp_change="N/A"
+      temp_change2="N/A"
     else
       # old, fetch
       if [ -x "$(command -v curl)" ]; then
@@ -48,14 +48,14 @@ fetch_weather() {
           else
             weather="$weather_saved"
             weather2="$weather2_saved"
-            temp_change=0
-            temp_change2=0
+            temp_change="N/A"
+            temp_change2="N/A"
           fi
         else
           weather="$weather_saved"
           weather2="$weather2_saved"
-          temp_change=0
-          temp_change2=0
+          temp_change="N/A"
+          temp_change2="N/A"
         fi
       fi
     fi
@@ -67,6 +67,8 @@ fetch_weather() {
         weather2=$(curl -s "wttr.in/$WEATHER_LOCATION_2?format=3" 2>/dev/null)
         if [ $? -eq 0 ] && [ -n "$weather2" ]; then
           fetched=true
+          temp_current=$(extract_temp "$weather")
+          temp2_current=$(extract_temp "$weather2")
           temp_change="N/A"
           temp_change2="N/A"
         else
@@ -89,13 +91,21 @@ fetch_weather() {
 }
 
 print_weather() {
-  if [ "$temp_change" != "0" ] && [ "$temp_change" != "N/A" ]; then
-    print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather${Whi} ($temp_change°C)${RCol}"
+  if [[ "$temp_change" =~ ^-?[0-9]+$ ]] && [ "$temp_change" != "0" ]; then
+    if [ "$temp_change" -gt 0 ]; then
+      print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather${Whi} (+$temp_change°C)${RCol}"
+    else
+      print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather${Whi} ($temp_change°C)${RCol}"
+    fi
   else
     print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather${RCol}"
   fi
-  if [ "$temp_change2" != "0" ] && [ "$temp_change2" != "N/A" ]; then
-    print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather2${Whi} ($temp_change2°C)${RCol}"
+  if [[ "$temp_change2" =~ ^-?[0-9]+$ ]] && [ "$temp_change2" != "0" ]; then
+    if [ "$temp_change2" -gt 0 ]; then
+      print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather2${Whi} (+$temp_change2°C)${RCol}"
+    else
+      print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather2${Whi} ($temp_change2°C)${RCol}"
+    fi
   else
     print_line "$(generate_asterisk) ${Whi}Weather${RCol} - ${BRed}$weather2${RCol}"
   fi
