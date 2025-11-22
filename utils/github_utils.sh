@@ -9,14 +9,17 @@ fetch_prs() {
       user=$(gh api user --jq .login)
       {
         # PRs awaiting your review
-        reviewer_prs=$(gh pr list --repo openx/ui-unity --state open --json number,title,reviewRequests,reviews \
+        reviewer_prs=$(gh pr list --repo openx/ui-unity --state open --json number,title,author,reviewRequests,reviews \
           | jq -r --arg user "$user" '.[]
             | select(
-                (any(.reviewRequests[]?; .__typename=="User" and .login==$user))
-                or
-                (
-                  any(.reviews[]?; .author.login==$user)
-                  and ([.reviews[]? | select(.author.login==$user) | .state] | last != "APPROVED")
+                .author.login != $user
+                and (
+                  (any(.reviewRequests[]?; .__typename=="User" and .login==$user))
+                  or
+                  (
+                    any(.reviews[]?; .author.login==$user)
+                    and ([.reviews[]? | select(.author.login==$user) | .state] | last != "APPROVED")
+                  )
                 )
               )
             | "https://github.com/openx/ui-unity/pull/\(.number)\n\(.title)"' 2>/dev/null)
