@@ -36,6 +36,12 @@ fetch_calendar_events() {
     # Function to get file modification time
     get_mtime() { stat -f %m "$1"; }
 
+    # Get day of week (1=Monday, 7=Sunday)
+    get_day_of_week() {
+        local timestamp=$1
+        date -r "$timestamp" +%u
+    }
+
     # Function to generate and cache calendar events
     generate_calendar_events() {
         if [ -x "$(command -v gcalcli)" ]; then
@@ -81,9 +87,24 @@ fetch_calendar_events() {
     }
 
     # Check cache freshness
+    current_day=$(get_day_of_week "$now_sec")
+
     if [ -f "$cache_file" ]; then
         last_modified=$(get_mtime "$cache_file")
+        cache_day=$(get_day_of_week "$last_modified")
         age=$(( now_sec - last_modified ))
+
+        # Weekend logic (Saturday=6, Sunday=7) - no events happen on weekends
+        if [ "$current_day" -eq 6 ] || [ "$current_day" -eq 7 ]; then
+            # Currently weekend - no need to refresh cache at all
+            if [ "$cache_day" -eq 5 ]; then
+                # Cache from Friday - keep it fresh all weekend
+                age=0
+            elif [ "$cache_day" -eq 6 ] || [ "$cache_day" -eq 7 ]; then
+                # Cache from weekend - keep it until Monday
+                age=0
+            fi
+        fi
     else
         age=$max_age
     fi
